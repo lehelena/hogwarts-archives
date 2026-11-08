@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts Archives - O Portal do Mundo Bruxo</title>
+    <link rel="shortcut icon"hogwartsThemeAudio" type="image/x-icon">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        hogwarts: {
+                            dark: '#07070a',
+                            card: '#101016',
+                            border: '#232330',
+                            gold: '#d4af37',
+                            goldHover: '#f3ca3e',
+                            parchment: '#e8d8b0',
+                            gryffindor: '#740001',
+                            gryffindorGold: '#d3a625',
+                            slytherin: '#1a472a',
+                            slytherinSilver: '#aaaaaa',
+                            ravenclaw: '#0e1a40',
+                            ravenclawBronze: '#946b2d',
+                            hufflepuff: '#ecb939',
+                            hufflepuffDark: '#372e29'
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        cinzelDeco: ['Cinzel Decorative', 'cursive'],
+                        gothic: ['UnifrakturMaguntia', 'cursive'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styling for Magical Aesthetic */
+        body {
+            background-color: #07070a;
+            color: #e2e8f0;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08), transparent 70%),
+                radial-gradient(circle at 80% 50%, rgba(116, 0, 1, 0.05), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(26, 71, 42, 0.05), transparent 50%);
+        }
+
+        .gold-glow {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+        }
+
+        .gold-glow-hover:hover {
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .house-card-gryffindor:hover { border-color: #740001; box-shadow: 0 0 20px rgba(116, 0, 1, 0.4); }
+        .house-card-slytherin:hover { border-color: #1a472a; box-shadow: 0 0 20px rgba(26, 71, 42, 0.4); }
+        .house-card-ravenclaw:hover { border-color: #0e1a40; box-shadow: 0 0 20px rgba(14, 26, 64, 0.6); }
+        .house-card-hufflepuff:hover { border-color: #ecb939; box-shadow: 0 0 20px rgba(236, 185, 57, 0.4); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07070a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #232330;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+
+        .page-view {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-link.active {
+            color: #d4af37;
+            border-bottom: 2px solid #d4af37;
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        /* Efeito de iluminação Lumos */
+        .lumos-active {
+            background-color: #121118 !important;
+            box-shadow: inset 0 0 100px rgba(255, 235, 170, 0.4), 0 0 80px rgba(212, 175, 55, 0.5) !important;
+            transition: all 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-hogwarts-gold selection:text-black">
+
+    <!-- Ambient Magical Stars Canvas -->
+    <canvas id="particlesCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 bg-hogwarts-dark/95 backdrop-blur-md border-b border-hogwarts-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('home')">
+                    <div class="w-10 h-10 rounded-full border border-hogwarts-gold/60 flex items-center justify-center bg-hogwarts-card group-hover:border-hogwarts-gold transition-all duration-300">
+                        <i class="fa-solid fa-hat-wizard text-hogwarts-gold text-lg group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div>
+                        <span class="font-cinzel text-xl sm:text-2xl font-extrabold tracking-wider text-white block leading-none">HOGWARTS</span>
+                        <span class="font-cinzel text-[10px] text-hogwarts-gold tracking-widest uppercase">Arquivos do Mundo Bruxo</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-1 font-cinzel text-xs font-bold uppercase tracking-wider">
+                    <button onclick="navigateTo('home')" id="nav-home" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-hogwarts-gold transition-all">Início</button>
+                    <button onclick="navigateTo('houses')" id="nav-houses" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-hogwarts-gold transition-all">As 4 Casas</button>
+                    <button onclick="navigateTo('curiosities')" id="nav-curiosities" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-hogwarts-gold transition-all">Curiosidades & Chapéu</button>
+                    <button onclick="navigateTo('movies')" id="nav-movies" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-hogwarts-gold transition-all">Catálogo de Filmes</button>
+                    <button onclick="navigateTo('room-of-requirement')" id="nav-room-of-requirement" class="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-hogwarts-gold transition-all">Sala Precisa</button>
+                </nav>
+
+                <!-- Search Input Bar -->
+                <div class="hidden lg:flex items-center bg-hogwarts-card border border-hogwarts-border rounded-full px-3 py-1.5 focus-within:border-hogwarts-gold transition-all">
+                    <i class="fa-solid fa-wand-sparkles text-hogwarts-gold text-xs mr-2"></i>
+                    <input type="text" id="globalSearchInput" onkeyup="handleSearch(event)" placeholder="Buscar feitiço, filme..." class="bg-transparent text-xs text-white placeholder-gray-500 focus:outline-none w-40">
+                </div>
+
+                <!-- Mobile Hamburger Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Abrir menu" class="text-gray-300 hover:text-white p-3 rounded-lg hover:bg-hogwarts-card transition-colors">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-hogwarts-card border-b border-hogwarts-border px-4 pt-3 pb-6 space-y-2 font-cinzel text-xs font-bold uppercase">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl text-gray-300 hover:text-hogwarts-gold hover:bg-hogwarts-dark transition-all">Início</button>
+            <button onclick="navigateTo('houses'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl text-gray-300 hover:text-hogwarts-gold hover:bg-hogwarts-dark transition-all">As 4 Casas</button>
+            <button onclick="navigateTo('curiosities'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl text-gray-300 hover:text-hogwarts-gold hover:bg-hogwarts-dark transition-all">Curiosidades & Chapéu</button>
+            <button onclick="navigateTo('movies'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl text-gray-300 hover:text-hogwarts-gold hover:bg-hogwarts-dark transition-all">Catálogo de Filmes</button>
+            <button onclick="navigateTo('room-of-requirement'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl text-gray-300 hover:text-hogwarts-gold hover:bg-hogwarts-dark transition-all">Sala Precisa</button>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Content Container -->
+    <main id="mainContainer" class="flex-grow relative z-10">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <section id="view-home" class="page-view">
+            <!-- Hero Banner -->
+            <div class="relative min-h-[70vh] sm:min-h-[75vh] flex items-center justify-center py-12 sm:py-20 px-4">
+                <div class="max-w-4xl text-center space-y-6">
+                    
+                    <div class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-hogwarts-gold/10 border border-hogwarts-gold/30 text-hogwarts-gold text-[10px] sm:text-xs font-cinzel tracking-widest uppercase mb-2">
+                        <i class="fa-solid fa-bolt"></i> Bem-vindo à Escola de Magia e Bruxaria
+                    </div>
+
+                    <h1 class="font-cinzelDeco text-3xl sm:text-6xl md:text-7xl font-bold text-white tracking-wide leading-tight sm:leading-tight drop-shadow-xl">
+                        DESVENDE OS SEGREDOS DE <br class="hidden sm:inline"/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-hogwarts-gold via-yellow-200 to-amber-500">HOGWARTS</span>
+                    </h1>
+
+                    <p class="font-sans text-gray-300 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed px-2">
+                        Explore o arquivo definitivo do Universo Bruxo. Descubra a história das quatro grandes casas, teste a sua aptidão com o Chapéu Seletor e assista a toda a saga cinematográfica.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-4 sm:pt-6 px-4">
+                        <button onclick="navigateTo('houses')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-600 to-hogwarts-gold hover:from-amber-500 hover:to-yellow-400 text-black font-cinzel font-extrabold text-sm tracking-wider transition-all duration-300 transform active:scale-95 gold-glow flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-shield-halved"></i> Explorar as Casas
+                        </button>
+                        <button onclick="navigateTo('movies')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-hogwarts-card border border-hogwarts-border hover:border-hogwarts-gold text-white font-cinzel font-bold text-sm tracking-wider transition-all duration-300 active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-film text-hogwarts-gold"></i> Catálogo de Filmes
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Highlights Quick Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 border-t border-hogwarts-border/60">
+                <div class="text-center mb-8 sm:mb-12">
+                    <h2 class="font-cinzel text-xl sm:text-3xl font-bold text-white">Seções Principais</h2>
+                    <div class="h-0.5 w-16 bg-hogwarts-gold mx-auto my-3"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                    <!-- Card 1: Houses -->
+                    <div onclick="navigateTo('houses')" class="cursor-pointer bg-hogwarts-card border border-hogwarts-border p-6 sm:p-8 rounded-2xl hover:border-hogwarts-gold transition-all duration-300 group active:scale-[0.98]">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-hogwarts-gold/10 border border-hogwarts-gold/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-chess-rook text-xl sm:text-2xl text-hogwarts-gold"></i>
+                        </div>
+                        <h3 class="font-cinzel text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-hogwarts-gold transition-colors">As 4 Casas de Hogwarts</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4">Gryffindor, Slytherin, Ravenclaw e Hufflepuff. Conheça as virtudes, fundadores, fantasma e ex-alunos de cada casa.</p>
+                        <span class="text-xs font-cinzel text-hogwarts-gold font-bold flex items-center gap-2">Acessar Casas <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+
+                    <!-- Card 2: Sorting Hat & Trivia -->
+                    <div onclick="navigateTo('curiosities')" class="cursor-pointer bg-hogwarts-card border border-hogwarts-border p-6 sm:p-8 rounded-2xl hover:border-hogwarts-gold transition-all duration-300 group active:scale-[0.98]">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-hogwarts-gold/10 border border-hogwarts-gold/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-hat-wizard text-xl sm:text-2xl text-hogwarts-gold"></i>
+                        </div>
+                        <h3 class="font-cinzel text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-hogwarts-gold transition-colors">Chapéu Seletor & Lore</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4">Responda ao teste mágico oficial para descobrir sua verdadeira casa e explore a biblioteca de feitiços e relíquias.</p>
+                        <span class="text-xs font-cinzel text-hogwarts-gold font-bold flex items-center gap-2">Fazer o Teste <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+
+                    <!-- Card 3: Film Streaming -->
+                    <div onclick="navigateTo('movies')" class="cursor-pointer bg-hogwarts-card border border-hogwarts-border p-6 sm:p-8 rounded-2xl hover:border-hogwarts-gold transition-all duration-300 group active:scale-[0.98]">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-hogwarts-gold/10 border border-hogwarts-gold/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-play text-xl sm:text-2xl text-hogwarts-gold"></i>
+                        </div>
+                        <h3 class="font-cinzel text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-hogwarts-gold transition-colors">Cine-Magia Completo</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4">Todos os 8 filmes da franquia disponíveis em nosso player interativo com detalhes técnicos, sinopses e trailers.</p>
+                        <span class="text-xs font-cinzel text-hogwarts-gold font-bold flex items-center gap-2">Ver Catálogo <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: HOUSES ================= -->
+        <section id="view-houses" class="page-view hidden py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
+                <h1 class="font-cinzel text-2xl sm:text-5xl font-extrabold text-white">As Quatro Grandes Casas</h1>
+                <div class="h-0.5 w-20 bg-hogwarts-gold mx-auto my-3"></div>
+                <p class="text-gray-400 text-xs sm:text-sm px-2">"Cada uma das quatro casas produziu bruxos e bruxas excepcionais durante sua história."</p>
+            </div>
+
+            <!-- House Selector Tabs -->
+            <div class="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12">
+                <button onclick="selectHouseTab('gryffindor')" id="tab-gryffindor" class="house-tab-btn px-4 py-3 rounded-xl border border-hogwarts-border text-xs font-cinzel font-bold uppercase transition-all flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-shield text-red-600"></i> Gryffindor
+                </button>
+                <button onclick="selectHouseTab('slytherin')" id="tab-slytherin" class="house-tab-btn px-4 py-3 rounded-xl border border-hogwarts-border text-xs font-cinzel font-bold uppercase transition-all flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-staff-snake text-emerald-500"></i> Slytherin
+                </button>
+                <button onclick="selectHouseTab('ravenclaw')" id="tab-ravenclaw" class="house-tab-btn px-4 py-3 rounded-xl border border-hogwarts-border text-xs font-cinzel font-bold uppercase transition-all flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-feather text-blue-500"></i> Ravenclaw
+                </button>
+                <button onclick="selectHouseTab('hufflepuff')" id="tab-hufflepuff" class="house-tab-btn px-4 py-3 rounded-xl border border-hogwarts-border text-xs font-cinzel font-bold uppercase transition-all flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-seedling text-amber-400"></i> Hufflepuff
+                </button>
+            </div>
+
+            <!-- Dynamic House Content Display -->
+            <div id="houseDisplayContainer" class="bg-hogwarts-card border border-hogwarts-border rounded-2xl sm:rounded-3xl p-5 sm:p-10 shadow-2xl transition-all">
+                <!-- Javascript populates house details -->
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: CURIOSITIES & SORTING HAT ================= -->
+        <section id="view-curiosities" class="page-view hidden py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Sorting Hat Interactive App Section -->
+            <div class="bg-gradient-to-b from-hogwarts-card to-hogwarts-dark border border-hogwarts-border rounded-2xl sm:rounded-3xl p-4 sm:p-10 mb-12 sm:mb-16 shadow-2xl relative overflow-hidden">
+                <div class="max-w-3xl mx-auto text-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-hogwarts-gold/10 border border-hogwarts-gold/40 flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-hat-wizard text-2xl sm:text-3xl text-hogwarts-gold"></i>
+                    </div>
+                    <h2 class="font-cinzel text-2xl sm:text-4xl font-extrabold text-white mb-2">O Chapéu Seletor</h2>
+                    <p class="text-gray-400 text-xs sm:text-sm mb-6 sm:mb-8 px-2">Responda honestamente às perguntas mágicas para ser designado à sua verdadeira casa em Hogwarts.</p>
+
+                    <!-- Quiz Area -->
+                    <div id="quizContainer" class="text-left bg-hogwarts-dark border border-hogwarts-border p-4 sm:p-8 rounded-xl sm:rounded-2xl">
+                        <!-- Dynamic Question Loaded via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Curiosities Lore Grid -->
+            <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
+                <h2 class="font-cinzel text-2xl sm:text-4xl font-bold text-white">Compêndio de Curiosidades</h2>
+                <div class="h-0.5 w-16 bg-hogwarts-gold mx-auto my-3"></div>
+                <p class="text-gray-400 text-xs sm:text-sm px-2">Segredos revelados do universo criado por J.K. Rowling.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6" id="curiositiesGrid">
+                
+                <!-- Lore Card 1: Spells -->
+                <div class="bg-hogwarts-card border border-hogwarts-border rounded-2xl p-5 sm:p-6 hover:border-hogwarts-gold transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fa-solid fa-wand-sparkles text-xl sm:text-2xl text-hogwarts-gold"></i>
+                        <h3 class="font-cinzel text-lg sm:text-xl font-bold text-white">Feitiços Fundamentais</h3>
+                    </div>
+                    <ul class="space-y-3 text-xs text-gray-300">
+                        <li class="border-b border-hogwarts-border/50 pb-2">
+                            <span class="font-bold text-hogwarts-gold block text-sm font-cinzel">Expecto Patronum</span>
+                            Invoca um guardião de energia positiva feito de pensamentos felizes para repelir Dementadores.
+                        </li>
+                        <li class="border-b border-hogwarts-border/50 pb-2">
+                            <span class="font-bold text-hogwarts-gold block text-sm font-cinzel">Avada Kedavra</span>
+                            A Maldição da Morte. Um dos três Feitiços Imperdoáveis que causa morte instantânea e sem marcas.
+                        </li>
+                        <li class="pb-1">
+                            <span class="font-bold text-hogwarts-gold block text-sm font-cinzel">Expelliarmus</span>
+                            O feitiço de desarmamento. A assinatura de combate de Harry Potter em duelos.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Lore Card 2: Horcruxes -->
+                <div class="bg-hogwarts-card border border-hogwarts-border rounded-2xl p-5 sm:p-6 hover:border-hogwarts-gold transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fa-solid fa-gem text-xl sm:text-2xl text-red-500"></i>
+                        <h3 class="font-cinzel text-lg sm:text-xl font-bold text-white">As 7 Horcruxes de Voldemort</h3>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-3">Objetos que continham pedaços da alma fracionada do Lord das Trevas:</p>
+                    <ol class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-300 font-mono">
+                        <li class="bg-hogwarts-dark p-2 rounded border border-hogwarts-border">1. Diário de Tom Riddle</li>
+                        <li class="bg-hogwarts-dark p-2 rounded border border-hogwarts-border">2. Anel de Gaunt</li>
+                        <li class="bg-hogwarts-dark p-2 rounded border border-hogwarts-border">3. Medalhão de Slytherin</li>
+                        <li class="bg-hogwarts-dark p-2 rounded border border-hogwarts-border">4. Taça de Hufflepuff</li>
+                        <li class="bg-hogwarts-dark p-2 rounded border border-hogwarts-border">5. Diadema de Ravenclaw</li>
+                        <li class="bg-hogwarts-dark p-2 rounded border border-hogwarts-border">6. Nagini (A Serpente)</li>
+                        <li class="bg-hogwarts-dark p-2 rounded border border-hogwarts-border sm:col-span-2 text-hogwarts-gold font-bold">7. Harry Potter (Involuntária)</li>
+                    </ol>
+                </div>
+
+                <!-- Lore Card 3: Deathly Hallows -->
+                <div class="bg-hogwarts-card border border-hogwarts-border rounded-2xl p-5 sm:p-6 hover:border-hogwarts-gold transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fa-solid fa-play text-xl sm:text-2xl text-amber-400 transform -rotate-90"></i>
+                        <h3 class="font-cinzel text-lg sm:text-xl font-bold text-white">As Relíquias da Morte</h3>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        Entregues pela própria Morte aos três irmãos Peverell: a <strong>Varinha das Varinhas</strong> (a mais poderosa já feita), a <strong>Pedra da Ressurreição</strong> (capaz de trazer sombras dos mortos) e a <strong>Capa da Invisibilidade</strong> (que concede ocultação perfeita e eterna). Quem possuir as três se torna o Mestre da Morte.
+                    </p>
+                </div>
+
+                <!-- Lore Card 4: Secrets -->
+                <div class="bg-hogwarts-card border border-hogwarts-border rounded-2xl p-5 sm:p-6 hover:border-hogwarts-gold transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fa-solid fa-key text-xl sm:text-2xl text-purple-400"></i>
+                        <h3 class="font-cinzel text-lg sm:text-xl font-bold text-white">Segredos do Castelo</h3>
+                    </div>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li>• <strong>142 Escadarias:</strong> Em Hogwarts as escadas mudam de lugar constantemente.</li>
+                        <li>• <strong>O Mapa do Maroto:</strong> Criado por Aluado, Rabicho, Almofadinhas e Pontas ("Eu juro solenemente não fazer nada de bom").</li>
+                        <li>• <strong>Câmara dos Segredos:</strong> Escondida abaixo dos banheiros femininos e construída por Salazar Slytherin.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: MOVIES CATALOG & STREAMING ================= -->
+        <section id="view-movies" class="page-view hidden py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
+                <h1 class="font-cinzel text-2xl sm:text-5xl font-extrabold text-white">Catálogo de Filmes da Saga</h1>
+                <div class="h-0.5 w-20 bg-hogwarts-gold mx-auto my-3"></div>
+                <p class="text-gray-400 text-xs sm:text-sm px-2">Assista aos filmes completos da jornada de Harry Potter do 1º ao 8º ano.</p>
+            </div>
+
+            <!-- Movies Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" id="moviesGrid">
+                <!-- Javascript dynamic movie cards -->
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: ROOM OF REQUIREMENT (EASTER EGGS) ================= -->
+        <section id="view-room-of-requirement" class="page-view hidden py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-hogwarts-card border border-hogwarts-gold/40 rounded-2xl sm:rounded-3xl p-6 sm:p-12 text-center max-w-4xl mx-auto shadow-2xl relative">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-hogwarts-gold/10 border border-hogwarts-gold flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-door-open text-2xl sm:text-3xl text-hogwarts-gold"></i>
+                </div>
+                <h1 class="font-cinzel text-2xl sm:text-4xl font-extrabold text-white mb-4">A Sala Precisa</h1>
+                <p class="text-gray-300 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed mb-8">
+                    Você encontrou a sala que só aparece para quem realmente precisa de algo. Aqui estão guardados feitiços rápidos, atalhos mágicos e surpresas do portal.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-left max-w-2xl mx-auto">
+                    <button id="lumosBtn" onclick="castLumos()" class="p-4 rounded-xl bg-hogwarts-dark border border-hogwarts-border hover:border-hogwarts-gold text-white font-cinzel text-xs flex items-center justify-between transition-all active:scale-95">
+                        <span id="lumosBtnText"><i class="fa-solid fa-sun text-yellow-400 mr-2"></i> Lançar "Lumos" (Iluminar)</span>
+                        <i id="lumosIcon" class="fa-solid fa-wand-magic-sparkles text-hogwarts-gold"></i>
+                    </button>
+                    <button id="audioBtn" onclick="playMagicAudio()" class="p-4 rounded-xl bg-hogwarts-dark border border-hogwarts-border hover:border-hogwarts-gold text-white font-cinzel text-xs flex items-center justify-between transition-all active:scale-95">
+                        <span id="audioBtnText"><i class="fa-solid fa-music text-purple-400 mr-2"></i> Tocar Tema de Hogwarts</span>
+                        <i id="audioBtnIcon" class="fa-solid fa-play text-hogwarts-gold"></i>
+                    </button>
+                </div>
+                <!-- Audio Player do Tema -->
+                <audio id="hogwartsThemeAudio" src="Harry_Potter_Soundtrack_-_Harry_Potter_-Prologue_(mp3.pm).mp3" preload="auto"></audio>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FULLSCREEN STREAMING / VIDEO PLAYER MODAL ================= -->
+    <div id="videoPlayerModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-2 sm:p-6">
+        <div class="relative w-full max-w-5xl bg-hogwarts-card border border-hogwarts-gold/50 rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] sm:max-h-none">
+            
+            <!-- Modal Header bar -->
+            <div class="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-hogwarts-dark border-b border-hogwarts-border">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <i class="fa-solid fa-film text-hogwarts-gold text-base sm:text-lg"></i>
+                    <div>
+                        <h3 id="modalMovieTitle" class="font-cinzel font-bold text-white text-xs sm:text-base truncate max-w-[200px] sm:max-w-none">Nome do Filme</h3>
+                        <span id="modalMovieMeta" class="text-[10px] sm:text-xs text-gray-400 font-mono block">2001 • 2h 32m</span>
+                    </div>
+                </div>
+                <button onclick="closeMoviePlayer()" aria-label="Fechar player" class="text-gray-400 hover:text-white text-xl sm:text-2xl p-2 focus:outline-none transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Video Player Iframe Container -->
+            <div class="relative aspect-video w-full bg-black">
+                <iframe id="modalMovieIframe" class="w-full h-full" src="" title="Hogwarts Movie Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <!-- Player Footer info -->
+            <div class="p-4 sm:p-6 bg-hogwarts-dark border-t border-hogwarts-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 overflow-y-auto">
+                <p id="modalMovieDesc" class="text-xs text-gray-300 max-w-2xl leading-relaxed">Sinopse do filme...</p>
+                <button onclick="closeMoviePlayer()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-hogwarts-gold text-black font-cinzel font-bold text-xs hover:bg-yellow-400 transition-colors self-end sm:self-auto text-center">
+                    Fechar Player
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-hogwarts-border py-8 sm:py-12 text-gray-500 text-xs relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+            <div class="flex justify-center items-center gap-2">
+                <i class="fa-solid fa-hat-wizard text-hogwarts-gold text-lg"></i>
+                <span class="font-cinzel text-sm font-bold text-white">HOGWARTS ARCHIVES</span>
+            </div>
+            <p class="max-w-md mx-auto text-gray-500 text-xs px-2">
+                Portal criado por fãs para fãs da saga Harry Potter. Todos os direitos de imagens, personagens e marcas pertencem à Warner Bros. Entertainment e J.K. Rowling.
+            </p>
+            <p class="font-cinzel text-hogwarts-gold text-[11px] uppercase tracking-widest">
+                "Malfeito Feito" — Mischief Managed
+            </p>
+            <div class="pt-4 border-t border-hogwarts-border/40 flex items-center justify-between">
+                <p class="text-[11px] text-gray-400 font-sans">
+                    © 2026 HogwartsArchives. Todos os direitos reservados.
+                </p>
+                <a href="https://github.com/lehelena" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-hogwarts-gold transition-colors text-lg p-2" title="GitHub - Letícia Helena" aria-label="Perfil do GitHub">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // ================= DATA STRUCTURES ================= //
+
+        // 4 Houses Complete Data
+        const housesData = {
+            gryffindor: {
+                name: "Gryffindor",
+                founder: "Godric Gryffindor",
+                traits: ["Coragem", "Bravura", "Determinação", "Cavalheirismo"],
+                colors: "Vermelho Escarlate e Ouro",
+                animal: "Leão",
+                element: "Fogo",
+                ghost: "Nick Quase-Sem-Cabeça",
+                commonRoom: "Torre de Grifinória (7º andar, atrás do quadro da Mulher Gorda).",
+                alumni: ["Harry Potter", "Albus Dumbledore", "Hermione Granger", "Ron Weasley", "Sirius Black"],
+                crestBg: "bg-red-950/60 border-red-700",
+                colorAccent: "text-red-500",
+                crestImage: "Brasão Dourado da Grifinória.png",
+                description: "Fundada pelo lendário duelista Godric Gryffindor, a casa valoriza os ousados e corajosos no coração."
+            },
+            slytherin: {
+                name: "Slytherin",
+                founder: "Salazar Slytherin",
+                traits: ["Ambição", "Astúcia", "Liderança", "Preservação"],
+                colors: "Verde Esmeralda e Prata",
+                animal: "Serpente",
+                element: "Água",
+                ghost: "Barão Sangrento",
+                commonRoom: "Masmorras de Hogwarts, abaixo do Lago Negro.",
+                alumni: ["Severus Snape", "Tom Riddle (Voldemort)", "Merlin", "Draco Malfoy", "Regulus Black"],
+                crestBg: "bg-emerald-950/60 border-emerald-700",
+                colorAccent: "text-emerald-500",
+                crestImage: "Brasão Esmeralda da Sonserina.png",
+                description: "A casa dos ambiciosos e perspicazes. Produziu alguns dos magos mais influentes e poderosos da história bruxa."
+            },
+            ravenclaw: {
+                name: "Ravenclaw",
+                founder: "Rowena Ravenclaw",
+                traits: ["Sabedoria", "Inteligência", "Criatividade", "Curiosidade"],
+                colors: "Azul Corvo e Bronze",
+                animal: "Águia",
+                element: "Ar",
+                ghost: "Dama Cinzenta (Helena Ravenclaw)",
+                commonRoom: "Torre da Corvinal, no lado oeste do castelo.",
+                alumni: ["Luna Lovegood", "Cho Chang", "Filius Flitwick", "Garrick Ollivander"],
+                crestBg: "bg-blue-950/60 border-blue-700",
+                colorAccent: "text-blue-400",
+                crestImage: "Brasão Realista da Corvinal.png",
+                description: "Aqueles de mente pronta e sede insaciável pelo saber encontram seu lar entre os sábios de Ravenclaw."
+            },
+            hufflepuff: {
+                name: "Hufflepuff",
+                founder: "Helga Hufflepuff",
+                traits: ["Lealdade", "Dedicacão", "Paciência", "Justiça"],
+                colors: "Amarelo Canário e Preto",
+                animal: "Teixugo",
+                element: "Terra",
+                ghost: "Frei Gorducho",
+                commonRoom: "Perto das cozinhas de Hogwarts, no porão.",
+                alumni: ["Cedric Diggory", "Newt Scamander", "Nymphadora Tonks", "Pomona Sprout"],
+                crestBg: "bg-amber-950/60 border-amber-600",
+                colorAccent: "text-amber-400",
+                crestImage: "Brasão Hufflepuff com Texugo Realista.png",
+                description: "Conhecida por acolher todos os que trabalham duro com lealdade, verdade e compaixão impecáveis."
+            }
+        };
+
+        // All 8 Movies Data Catalog
+        const moviesData = [
+            {
+                id: 1,
+                title: "Harry Potter e a Pedra Filosofal",
+                year: "2001",
+                duration: "2h 32m",
+                poster: "Harry_Potter_Pedra_Filosofal_2001.jpg",
+                synopsis: "No seu aniversário de 11 anos, Harry descobre ser um bruxo e é aceito na Escola de Magia de Hogwarts.",
+                trailerUrl: "https://www.youtube.com/embed/w81GvNtsKp8",
+                embedUrl: "https://myembed.biz/filme/671"
+            },
+            {
+                id: 2,
+                title: "Harry Potter e a Câmara dos Segredos",
+                year: "2002",
+                duration: "2h 41m",
+                poster: "vibezz_394276814.jpg",
+                synopsis: "Um monstro ancestral aterroriza os alunos de Hogwarts após a lendária Câmara ser reaberta.",
+                trailerUrl: "https://www.youtube.com/embed/cf0rRYvDuys",
+                embedUrl: "https://myembed.biz/filme/672"
+            },
+            {
+                id: 3,
+                title: "Harry Potter e o Prisioneiro de Azkaban",
+                year: "2004",
+                duration: "2h 22m",
+                poster: "107516g.jpg",
+                synopsis: "O perigoso bruxo Sirius Black escapa da prisão de Azkaban e parece estar caçando Harry.",
+                trailerUrl: "https://www.youtube.com/embed/e02fwhC6DiQ",
+                embedUrl: "https://myembed.biz/filme/673"
+            },
+            {
+                id: 4,
+                title: "Harry Potter e o Cálice de Fogo",
+                year: "2005",
+                duration: "2h 37m",
+                poster: "20282862.jpg",
+                synopsis: "Harry é misteriosamente selecionado para competir no perigoso Torneio Tribruxo.",
+                trailerUrl: "https://www.youtube.com/embed/cVKkL4O60IM",
+                embedUrl: "https://myembed.biz/filme/674"
+            },
+            {
+                id: 5,
+                title: "Harry Potter e a Ordem da Fênix",
+                year: "2007",
+                duration: "2h 18m",
+                poster: "7765-cartaz.jpg",
+                synopsis: "Com o Ministério da Magia negando o retorno de Voldemort, Harry treina secretamente a Armada de Dumbledore.",
+                trailerUrl: "https://www.youtube.com/embed/ZkDCaxUNV3o",
+                embedUrl: "https://myembed.biz/filme/675"
+            },
+            {
+                id: 6,
+                title: "Harry Potter e o Enigma do Príncipe",
+                year: "2009",
+                duration: "2h 33m",
+                poster: "19907655.jpg",
+                synopsis: "Harry encontra um livro de poções pertencente ao 'Príncipe Mestiço' enquanto investiga o passado de Voldemort.",
+                trailerUrl: "https://www.youtube.com/embed/sG-LDd5IUAk",
+                embedUrl: "https://myembed.biz/filme/767"
+            },
+            {
+                id: 7,
+                title: "Harry Potter e as Relíquias da Morte - Parte 1",
+                year: "2010",
+                duration: "2h 26m",
+                poster: "Harry_Potter_Deathly_Hallows_2010.jpg",
+                synopsis: "Harry, Ron e Hermione saem em uma jornada fora de Hogwarts para localizar e destruir as Horcruxes.",
+                trailerUrl: "https://www.youtube.com/embed/kmXjPbN-rYU",
+                embedUrl: "https://myembed.biz/filme/12444"
+            },
+            {
+                id: 8,
+                title: "Harry Potter e as Relíquias da Morte - Parte 2",
+                year: "2011",
+                duration: "2h 10m",
+                poster: "Harry_Potter_and_the_Deathly_Hallows_-_Part_2.jpg",
+                synopsis: "A batalha final entre as forças do bem e o exército das trevas no castelo de Hogwarts.",
+                trailerUrl: "https://www.youtube.com/embed/E79fa8bLfPA",
+                embedUrl: "https://myembed.biz/filme/12445"
+            }
+        ];
+
+        // Sorting Hat Quiz Questions
+        const sortingQuizQuestions = [
+            {
+                question: "1. Diante de um obstáculo difícil, qual é o seu primeiro impulso?",
+                options: [
+                    { text: "Enfrentar de frente com bravura, não importam os riscos.", house: "gryffindor" },
+                    { text: "Encontrar um atalho estratégico e inteligente para sair por cima.", house: "slytherin" },
+                    { text: "Analisar todas as opções cuidadosamente e aprender sobre a situação.", house: "ravenclaw" },
+                    { text: "Juntar meus amigos fiéis e trabalhar em equipe até resolver.", house: "hufflepuff" }
+                ]
+            },
+            {
+                question: "2. Qual qualidade você mais valoriza em si mesmo?",
+                options: [
+                    { text: "Coragem para defender o que é certo.", house: "gryffindor" },
+                    { text: "Ambição para alcançar o topo.", house: "slytherin" },
+                    { text: "Sabedoria e sede de conhecimento.", house: "ravenclaw" },
+                    { text: "Lealdade e honestidade inabaláveis.", house: "hufflepuff" }
+                ]
+            },
+            {
+                question: "3. Qual destas poções você preferiria beber?",
+                options: [
+                    { text: "Uma poção que concede audácia e força física impecável.", house: "gryffindor" },
+                    { text: "Felix Felicis — Sorte líquida para garantir meus planos.", house: "slytherin" },
+                    { text: "Uma poção que expande a mente e revela verdades do universo.", house: "ravenclaw" },
+                    { text: "Um elixir de cura duradouro para compartilhar com quem amo.", house: "hufflepuff" }
+                ]
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let houseScores = { gryffindor: 0, slytherin: 0, ravenclaw: 0, hufflepuff: 0 };
+        let isLumosActive = false;
+        let audioContext = null;
+        let isThemePlaying = false;
+        let audioOscillators = [];
+
+        // Navigation Engine
+        function navigateTo(viewId) {
+            document.querySelectorAll('.page-view').forEach(view => view.classList.add('hidden'));
+            
+            const targetView = document.getElementById(`view-${viewId}`);
+            if (targetView) {
+                targetView.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            const activeNav = document.getElementById(`nav-${viewId}`);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // House Display Handler
+        function selectHouseTab(houseKey) {
+            const house = housesData[houseKey];
+            if (!house) return;
+
+            document.querySelectorAll('.house-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-hogwarts-gold', 'text-black', 'border-hogwarts-gold');
+            });
+
+            const selectedBtn = document.getElementById(`tab-${houseKey}`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('bg-hogwarts-gold', 'text-black', 'border-hogwarts-gold');
+            }
+
+            const container = document.getElementById('houseDisplayContainer');
+            container.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                    <!-- Left: House Identity Card -->
+                    <div class="p-6 rounded-2xl border ${house.crestBg} text-center space-y-4">
+                        <div class="w-36 h-36 mx-auto flex items-center justify-center drop-shadow-2xl hover:scale-105 transition-transform duration-300">
+                            <img src="${house.crestImage}" alt="Brasão da casa ${house.name}" class="max-h-full max-w-full object-contain">
+                        </div>
+                        <h2 class="font-cinzel text-3xl font-extrabold text-white">${house.name}</h2>
+                        <span class="inline-block px-3 py-1 rounded-full bg-black/60 text-hogwarts-gold text-xs font-mono border border-hogwarts-border">
+                            Fundador: ${house.founder}
+                        </span>
+                        
+                        <div class="pt-4 border-t border-white/10 text-xs text-left space-y-2">
+                            <p><strong class="text-gray-400">Cores:</strong> <span class="text-white">${house.colors}</span></p>
+                            <p><strong class="text-gray-400">Animal Símbolo:</strong> <span class="text-white">${house.animal}</span></p>
+                            <p><strong class="text-gray-400">Elemento:</strong> <span class="text-white">${house.element}</span></p>
+                            <p><strong class="text-gray-400">Fantasma da Casa:</strong> <span class="text-white">${house.ghost}</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Lore & Details -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div>
+                            <h3 class="font-cinzel text-xl font-bold text-white mb-2">Sobre a Casa</h3>
+                            <p class="text-gray-300 text-sm leading-relaxed">${house.description}</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-cinzel text-sm font-bold text-hogwarts-gold uppercase mb-3">Virtudes e Traços Principais</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${house.traits.map(trait => `<span class="px-3 py-1.5 rounded-lg bg-hogwarts-dark border border-hogwarts-border text-xs text-white">${trait}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-cinzel text-sm font-bold text-hogwarts-gold uppercase mb-3">Salão Comunal</h4>
+                            <p class="text-gray-300 text-xs bg-hogwarts-dark p-4 rounded-xl border border-hogwarts-border">${house.commonRoom}</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-cinzel text-sm font-bold text-hogwarts-gold uppercase mb-3">Bruxos Notáveis (Ex-Alunos)</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${house.alumni.map(name => `<span class="px-3 py-1 rounded-full bg-hogwarts-gold/10 border border-hogwarts-gold/30 text-xs text-hogwarts-gold font-mono">${name}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Quiz Sorting Hat Render Engine
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            if (!container) return;
+
+            if (currentQuizIndex >= sortingQuizQuestions.length) {
+                let highestHouse = 'gryffindor';
+                let maxScore = -1;
+                for (const house in houseScores) {
+                    if (houseScores[house] > maxScore) {
+                        maxScore = houseScores[house];
+                        highestHouse = house;
+                    }
+                }
+                const resultHouse = housesData[highestHouse];
+                container.innerHTML = `
+                    <div class="text-center py-6 space-y-4">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-hogwarts-gold/20 border-2 border-hogwarts-gold flex items-center justify-center">
+                            <i class="fa-solid fa-hat-wizard text-3xl text-hogwarts-gold animate-bounce"></i>
+                        </div>
+                        <h3 class="font-cinzel text-2xl font-bold text-white">O Chapéu Seletor Decidiu!</h3>
+                        <p class="text-sm text-gray-300">Sua mente revela grande afinidade com:</p>
+                        <div class="font-cinzel text-3xl font-extrabold text-hogwarts-gold tracking-wider uppercase">
+                            ${resultHouse.name}!
+                        </div>
+                        <p class="text-xs text-gray-400 max-w-md mx-auto">${resultHouse.description}</p>
+                        <button onclick="resetQuiz()" class="mt-4 px-6 py-2.5 rounded-xl bg-hogwarts-gold text-black font-cinzel font-bold text-xs hover:bg-yellow-400 transition-colors">
+                            Refazer o Teste
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            const q = sortingQuizQuestions[currentQuizIndex];
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center text-xs text-gray-400 border-b border-hogwarts-border pb-2">
+                        <span class="font-cinzel">Pergunta ${currentQuizIndex + 1} de ${sortingQuizQuestions.length}</span>
+                        <span>Seletor Mágico</span>
+                    </div>
+                    <h3 class="font-cinzel text-lg font-bold text-white">${q.question}</h3>
+                    <div class="space-y-2 pt-2">
+                        ${q.options.map(opt => `
+                            <button onclick="answerQuiz('${opt.house}')" class="w-full text-left p-3.5 rounded-xl bg-hogwarts-card border border-hogwarts-border hover:border-hogwarts-gold text-xs text-gray-200 transition-all flex items-center justify-between group">
+                                <span>${opt.text}</span>
+                                <i class="fa-solid fa-chevron-right text-hogwarts-gold opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerQuiz(houseKey) {
+            houseScores[houseKey]++;
+            currentQuizIndex++;
+            renderQuiz();
+        }
+
+        function resetQuiz() {
+            currentQuizIndex = 0;
+            houseScores = { gryffindor: 0, slytherin: 0, ravenclaw: 0, hufflepuff: 0 };
+            renderQuiz();
+        }
+
+        // Movies Catalog Render Engine
+        function renderMovies() {
+            const grid = document.getElementById('moviesGrid');
+            if (!grid) return;
+
+            grid.innerHTML = moviesData.map(movie => `
+                <div class="bg-hogwarts-card border border-hogwarts-border rounded-2xl overflow-hidden hover:border-hogwarts-gold transition-all duration-300 flex flex-col justify-between group shadow-xl">
+                    <div>
+                        <!-- Capa / Poster do Filme -->
+                        <div class="relative h-64 w-full overflow-hidden bg-hogwarts-dark">
+                            <img src="${movie.poster}" alt="${movie.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                            <div class="absolute inset-0 bg-gradient-to-t from-hogwarts-card via-transparent to-transparent"></div>
+                            <span class="absolute top-3 right-3 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-mono text-hogwarts-gold border border-hogwarts-gold/30">
+                                ${movie.duration}
+                            </span>
+                        </div>
+
+                        <div class="p-5">
+                            <span class="text-xs text-hogwarts-gold font-mono">${movie.year}</span>
+                            <h3 class="font-cinzel text-lg font-bold text-white mt-1 mb-2 group-hover:text-hogwarts-gold transition-colors leading-snug">${movie.title}</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed line-clamp-3">${movie.synopsis}</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openMoviePlayer('${movie.title}', '${movie.year} • ${movie.duration}', '${movie.embedUrl}', '${movie.synopsis.replace(/'/g, "\\'")}')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-hogwarts-gold text-black font-cinzel font-extrabold text-xs tracking-wider flex items-center justify-center gap-2 hover:brightness-110 transition-all gold-glow">
+                            <i class="fa-solid fa-play"></i> Assistir Filme Completo
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openMoviePlayer(title, meta, embedUrl, desc) {
+            document.getElementById('modalMovieTitle').innerText = title;
+            document.getElementById('modalMovieMeta').innerText = meta;
+            document.getElementById('modalMovieDesc').innerText = desc;
+            document.getElementById('modalMovieIframe').src = embedUrl;
+            document.getElementById('videoPlayerModal').classList.remove('hidden');
+        }
+
+        function closeMoviePlayer() {
+            document.getElementById('modalMovieIframe').src = '';
+            document.getElementById('videoPlayerModal').classList.add('hidden');
+        }
+
+        function handleSearch(event) {
+            const query = event.target.value.toLowerCase().trim();
+            if (query.length > 2) {
+                navigateTo('movies');
+                const cards = document.querySelectorAll('#moviesGrid > div');
+                cards.forEach(card => {
+                    const text = card.innerText.toLowerCase();
+                    card.style.display = text.includes(query) ? 'flex' : 'none';
+                });
+            } else if (query.length === 0) {
+                renderMovies();
+            }
+        }
+
+        // Room of Requirement Spells
+        function castLumos() {
+            const card = document.getElementById('view-room-of-requirement');
+            const btnText = document.getElementById('lumosBtnText');
+            
+            isLumosActive = !isLumosActive;
+            if (isLumosActive) {
+                card.classList.add('lumos-active');
+                if (btnText) btnText.innerHTML = '<i class="fa-solid fa-moon text-blue-300 mr-2"></i> Lançar "Nox" (Apagar)';
+            } else {
+                card.classList.remove('lumos-active');
+                if (btnText) btnText.innerHTML = '<i class="fa-solid fa-sun text-yellow-400 mr-2"></i> Lançar "Lumos" (Iluminar)';
+            }
+        }
+
+        function playMagicAudio() {
+            const btnText = document.getElementById('audioBtnText');
+            const btnIcon = document.getElementById('audioBtnIcon');
+
+            if (isThemePlaying) {
+                stopHedwigTheme();
+                isThemePlaying = false;
+                if (btnText) btnText.innerHTML = '<i class="fa-solid fa-music text-purple-400 mr-2"></i> Tocar Tema de Hogwarts';
+                if (btnIcon) btnIcon.className = 'fa-solid fa-play text-hogwarts-gold';
+            } else {
+                startHedwigTheme();
+                isThemePlaying = true;
+                if (btnText) btnText.innerHTML = '<i class="fa-solid fa-pause text-yellow-400 mr-2"></i> Pausar Tema';
+                if (btnIcon) btnIcon.className = 'fa-solid fa-pause text-hogwarts-gold';
+            }
+        }
+
+        function startHedwigTheme() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const notes = [
+                { note: 493.88, duration: 0.5 },
+                { note: 659.25, duration: 0.75 },
+                { note: 783.99, duration: 0.35 },
+                { note: 739.99, duration: 0.4 },
+                { note: 659.25, duration: 0.8 },
+                { note: 987.77, duration: 0.4 },
+                { note: 880.00, duration: 1.0 },
+                { note: 739.99, duration: 1.0 },
+                { note: 659.25, duration: 0.75 },
+                { note: 783.99, duration: 0.35 },
+                { note: 739.99, duration: 0.4 },
+                { note: 622.25, duration: 0.8 },
+                { note: 698.46, duration: 0.5 },
+                { note: 493.88, duration: 1.2 }
+            ];
+
+            let currentTime = audioContext.currentTime + 0.1;
+
+            notes.forEach(n => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(n.note, currentTime);
+
+                gain.gain.setValueAtTime(0, currentTime);
+                gain.gain.linearRampToValueAtTime(0.15, currentTime + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, currentTime + n.duration);
+
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                osc.start(currentTime);
+                osc.stop(currentTime + n.duration);
+
+                audioOscillators.push(osc);
+                currentTime += n.duration;
+            });
+        }
+
+        function stopHedwigTheme() {
+            audioOscillators.forEach(osc => {
+                try { osc.stop(); } catch(e) {}
+            });
+            audioOscillators = [];
+        }
+
+        // Background Starfield Canvas
+        function initCanvas() {
+            const canvas = document.getElementById('particlesCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const stars = Array.from({ length: 60 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                alpha: Math.random(),
+                speed: 0.005 + Math.random() * 0.01
+            }));
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    s.alpha += s.speed;
+                    if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
+                    ctx.fillStyle = `rgba(212, 175, 55, ${Math.abs(s.alpha)})`;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            selectHouseTab('gryffindor');
+            renderQuiz();
+            renderMovies();
+            initCanvas();
+        });
+    </script>
+</body>
+</html>
